@@ -19,13 +19,6 @@ class ViewController: UIViewController {
         webView = WKWebView() // doing this I know im not relying on this for the frame size
         /*now we need to add it to the screen*/
         view.addSubview(webView)
-        
-        let url:URL = URL(string: "https://www.google.com")!
-        //then we need a url request
-        let req:URLRequest = URLRequest(url: url)
-        //then all we do is tell the webView to load the request
-        webView.load(req)
-        
         /*The first thing we're going to do is call out that we're going to have auto
          layout override the frame of the web view. Now, the name of that property is,
          translates auto resizing mask into constraints. So if we set that to false,
@@ -36,14 +29,28 @@ class ViewController: UIViewController {
 
         let width = NSLayoutConstraint(item: webView, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 1.0, constant: 0)
         
-        let height = NSLayoutConstraint(item: webView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 1.0, constant: -20)  //constant so that the bottom is up by that many points in this case is -20
+        let height = NSLayoutConstraint(item: webView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 1.0, constant: -60)  //constant so that the bottom is up by that many points in this case is -20
         
         //so what if you want to bring down the layout 20 points or etc
-        let top = NSLayoutConstraint(item: webView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1.0, constant: 20)
+        let top = NSLayoutConstraint(item: webView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1.0, constant: 60)
         //So we actually need to add the constraints to our view, not the web view.
         
         view.addConstraints([width,height,top])
         
+    }
+    @IBAction func goBack(_ sender: Any) {
+        webView.goBack()
+        
+    }
+    func textFieldShouldReturn(_ textField:UITextField)-> Bool{
+        
+        let url:URL = URL(string: textField.text!)!
+        //then we need a url request
+        let req:URLRequest = URLRequest(url: url)
+        //then all we do is tell the webView to load the request
+        webView.load(req)
+        textField.resignFirstResponder() //hides the keyboard as soon as you press the GO button
+        return false
     }
     
     override func didReceiveMemoryWarning() {
